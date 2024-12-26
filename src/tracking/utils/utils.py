@@ -106,12 +106,12 @@ def cnt_rect(cnts, coef=0.1):
     for cnt in cnts:
         peri = cv2.arcLength(cnt, True)
         approx = cv2.approxPolyDP(cnt, coef * peri, True)
-        if len(approx) == 4:
+        if len(approx) == 4 and cv2.contourArea(cnt) > 100:
             contour_list.append(cnt)
-
     if not contour_list:
         return None
     else:
+        return contour_list
         LC = max(contour_list, key=cv2.contourArea)
         return LC
 
@@ -153,7 +153,12 @@ def cnt_circle(img, hough_dict):
         cv2.circle(mask, (int(center_x), int(center_y)), int(r), 255)
         cnts = cv2.findContours(mask, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
         cnt = cnts[0]
+        # print(cnt)
+        # print(list(map(cv2.contourArea, cnt)))
+        # print(list(filter(lambda x: cv2.contourArea(x) > 0, cnt)))
+        return cnt
         if len(cnts[0]) > 0:
+            return cnt
             return max(cnt, key=cv2.contourArea)
         else:
             return cnt[-1]

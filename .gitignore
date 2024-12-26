@@ -1,2 +1,7 @@
 lab_1.ipynb
 src/calibration/*.jpg
+*/__pycache__/
+*/.ipynb_checkpoints/
+*/.DS_Store
+*/.vscode
+traffic_Data/

@@ -1,7 +1,15 @@
 lab_1.ipynb
 src/calibration/*.jpg
-*/__pycache__/
 */.ipynb_checkpoints/
 */.DS_Store
 */.vscode
+__pycache__/
 traffic_Data/
+.pytest_cache
+results/
+*/.pytest_cache
+*/.pytest_cache/
+*.xlsx
+*.csv
+*.mp4
+*.avi

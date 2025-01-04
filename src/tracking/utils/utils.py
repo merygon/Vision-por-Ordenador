@@ -2,6 +2,18 @@ import cv2
 import numpy as np
 
 
+def resize_image(img, fixed_width=300):
+    ratio = fixed_width / img.shape[1]
+    # return img
+    # img_resized = cv2.resize(
+    #     img, None, fx=ratio, fy=ratio, interpolation=cv2.INTER_AREA
+    # )
+    img_resized = cv2.resize(
+        img, (fixed_width, fixed_width), interpolation=cv2.INTER_AREA
+    )
+    return img_resized
+
+
 def show_img(window_name, img, adjust=False):
     """3 arguments: window name, source images, boolean to adjust to screen size"""
     if adjust:
@@ -12,6 +24,16 @@ def show_img(window_name, img, adjust=False):
     cv2.imshow(window_name, img)
     cv2.waitKey(0)
     cv2.destroyAllWindows()
+
+
+def rectanglesIntersect(r1, r2):
+    x, y, xw, yh = r1
+    x2, y2, xw2, yh2 = r2
+
+    if x2 < xw and x < xw2 and y2 < yh:
+        return y < yh2
+
+    return False
 
 
 def contrast_enhance(img):
@@ -84,9 +106,10 @@ def color_seg(img, kernel_size=None):
     mask_blue = cv2.inRange(hsv_img, lower_blue, upper_blue)
     mask_yellow = cv2.inRange(hsv_img, lower_yellow, upper_yellow)
     mask_black = cv2.inRange(hsv_img, lower_black, upper_black)
+    mask_white = cv2.inRange(hsv_img, (0, 0, 200), (179, 30, 255))
 
     # mask_combined = mask_red1 | mask_red2 | mask_blue | mask_yellow | mask_black
-    mask_combined = mask_red1 | mask_blue | mask_red2  # | mask_yellow | mask_black
+    mask_combined = mask_red1 | mask_blue | mask_red2  # | mask_black  # | mask_yellow |
 
     if kernel_size is not None:
         kernel = np.ones(kernel_size, np.uint8)
@@ -111,7 +134,7 @@ def cnt_rect(cnts, coef=0.1):
     if not contour_list:
         return None
     else:
-        return contour_list
+        return sorted(contour_list, key=lambda x: -cv2.contourArea(x))
         LC = max(contour_list, key=cv2.contourArea)
         return LC
 
@@ -133,16 +156,34 @@ def cnt_circle(img, hough_dict):
     cnt: contour
     hough_dict: hough_circle_transform parameters"""
     mask = np.zeros_like(img)
-    circles = cv2.HoughCircles(
-        img,
-        cv2.HOUGH_GRADIENT,
-        hough_dict["dp"],
-        hough_dict["minDist"],
-        param1=hough_dict["param1"],
-        param2=hough_dict["param2"],
-        minRadius=hough_dict["minRadius"],
-        maxRadius=hough_dict["maxRadius"],
-    )
+    try:
+        circles = cv2.HoughCircles(
+            img,
+            cv2.HOUGH_GRADIENT,
+            hough_dict["dp"],
+            hough_dict["minDist"],
+            param1=hough_dict["param1"],
+            param2=hough_dict["param2"],
+            minRadius=hough_dict["minRadius"],
+            maxRadius=hough_dict["maxRadius"],
+        )
+    except Exception as e:
+        print("Error in Hough Circle Transform: ", e)
+        print(
+            "dp",
+            hough_dict["dp"],
+            "minDist",
+            hough_dict["minDist"],
+            "param1",
+            hough_dict["param1"],
+            "param2",
+            hough_dict["param2"],
+            "minRadius",
+            hough_dict["minRadius"],
+            "maxRadius",
+            hough_dict["maxRadius"],
+        )
+        circles = None
     if circles is None:
         return circles
     else:
@@ -156,7 +197,7 @@ def cnt_circle(img, hough_dict):
         # print(cnt)
         # print(list(map(cv2.contourArea, cnt)))
         # print(list(filter(lambda x: cv2.contourArea(x) > 0, cnt)))
-        return cnt
+        return sorted(cnt, key=lambda x: -cv2.contourArea(x))
         if len(cnts[0]) > 0:
             return cnt
             return max(cnt, key=cv2.contourArea)

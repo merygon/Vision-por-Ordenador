@@ -4,23 +4,23 @@ import time
 from tqdm import tqdm
 import sys
 import pickle
+import numpy as np
 
 # Cargar conjuntos de datos
-training_set = Dataset.load("data/traffic_Data/DATA", "*png")
-validation_set = Dataset.load("data/traffic_Data/TEST", "*png")
+training_set = Dataset.load("../../data/traffic_Data/DATA", "*png")
+validation_set = Dataset.load("../../data/traffic_Data/TEST", "*png")
+
+print(training_set[0])
+print(validation_set[0])
 
 # Define constants
-vocabulary_size = 200
+vocabulary_size = 1024
 iterations = 40
 termination_criteria = (
     cv2.TERM_CRITERIA_MAX_ITER | cv2.TERM_CRITERIA_EPS,
     iterations,
     1e-6,
 )
-
-
-print(training_set[0])
-print(validation_set[0])
 
 # Crear el extractor de características SIFT
 feature_extractor = cv2.SIFT_create()
@@ -33,6 +33,22 @@ descriptors = []  # Lista para almacenar descriptores
 for path in tqdm(training_set, unit="image", file=sys.stdout):
     # Cargar la imagen en escala de grises
     image = cv2.imread(path, cv2.IMREAD_GRAYSCALE)
+
+    # Limpieza de la imagen
+    # 1. Ecualización del histograma
+    image_eq = cv2.equalizeHist(image)
+
+    # 2. Filtrado de ruido
+    image_blur = cv2.GaussianBlur(image_eq, (5, 5), 0)
+
+    # 3. Ajustar brillo 
+    image_bright = cv2.convertScaleAbs(image_blur, alpha=1.0, beta=50)
+
+    # 4. Corrección gamma
+    gamma = 2.0  # Ajustar el valor de gamma según sea necesario
+    gamma_corrected = np.array(255 * (image / 255) ** gamma, dtype='uint8')
+
+    image = gamma_corrected
     try:
         # Detectar y describir características SIFT
         keypoints, descriptor = feature_extractor.detectAndCompute(image, None)
@@ -61,13 +77,6 @@ filename = "classifying/vocabulary.pickle"
 # Open the file from above in the write and binay mode
 with open(filename, "wb") as f:
     pickle.dump(["SIFT", vocabulary], f, pickle.HIGHEST_PROTOCOL)
-
-try:
-    with open(filename, "rb") as f:
-        data = pickle.load(f)
-        print(f"Data from vocab.pickle: {data}")
-except Exception as e:
-    print(f"Error al cargar el archivo: {e}")
 
 
 # Load vocabulary into BoW

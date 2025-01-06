@@ -205,12 +205,12 @@ def live_detection_video(video_path, fixed_width=None):
 
 
 if __name__ == "__main__":
-    detect_signs_in_dir("../data/stop_sign/", fixed_width=500)
-    # detect_signs_in_video("../data/video_prueba.mp4", "result_video_prueba")
-    # follow_signs_in_video(
-    #     "../data/video_prueba_largo.mp4",
-    #     "resize",
-    #     fixed_width=500,
-    # )
-    # live_detection_video("../data/video_prueba_largo.mp4", fixed_width = None)
-    # live_detection_video(0, fixed_width=None)
+    detect_signs_in_dir("../data/testing_imgs/", fixed_width=500)
+    detect_signs_in_video("../data/video_prueba.mp4", "result_video_prueba")
+    follow_signs_in_video(
+        "../data/video_prueba_largo.mp4",
+        "resize",
+        fixed_width=500,
+    )
+    live_detection_video("../data/video_prueba_largo.mp4", fixed_width = None)
+    live_detection_video(0, fixed_width=None)

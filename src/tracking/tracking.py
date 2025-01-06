@@ -3,9 +3,28 @@ from skimage.exposure import is_low_contrast
 from pathlib import Path
 import cv2
 from .utils import *
+import os
+import pickle
+
+def calculate_dist_height(intrinsic_params, extrinsic_params, real_height_signal, x, y, w, h):
+    K = intrinsic_params
+    fx, fy = K[0, 0], K[1, 1]  # Longitudes focales en X e Y
+    distance_z = (real_height_signal * fy) / h  
+    return distance_z
 
 
 def track(img) -> set:
+
+    #pickle_file = os.path.join(os.path.dirname(__file__), "camera_calibration_params.pickle")
+    pickle_file = "calibration/camera_parameters.pkl"
+    # Abrir y cargar los datos del archivo .pickle
+    with open(pickle_file, "rb") as file:
+        calibration_params = pickle.load(file)
+
+    # Guardar en variables separadas
+    intrinsics = calibration_params["intrinsics"]
+    extrinsics = calibration_params["extrinsics"]
+    h_señal = 0.5  
 
     img_copy = img.copy()
 
@@ -21,7 +40,7 @@ def track(img) -> set:
     # change to grayscale
     gray = cv2.cvtColor(img_resized_mser, cv2.COLOR_BGR2GRAY)
 
-    # 1: Edge detection + shape detection + combine results of shape detector
+    # Edge detection + shape detection + combine results of shape detector
     edge, canny_th2 = auto_canny(gray, "otsu")
     # show_img("canny", edge)
     # Perform shape detectors
@@ -96,4 +115,9 @@ def track(img) -> set:
                 rects_saved.append(pred_bb)
             # prediction = predict_image(str_fn, bow.vocabulary, bow_extractor)
             # signs_detected[pred_bb] = prediction
+            #distancia, altura = calculate_dist_height(intrinsics, extrinsics, h_señal, x, y, w, h)
+            distancia = calculate_dist_height(intrinsics, extrinsics, h_señal, x, y, x+w, y+h)
+            print(f"Distancia a la señal: {distancia} metros.")
+            #print(f"Altura de la señal: {altura} metros.")
+
     return rects_saved

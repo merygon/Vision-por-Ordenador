@@ -1,51 +1,52 @@
+import glob
 import cv2
 from tqdm import tqdm
-from tracking import track, show_img, resize_image
-import os
+from tracking import track, show_img, resize_image, calculate_dist_height
 from pathlib import Path
 from classifying import classify_signal, draw_detection
 from video import read_video, save_video, get_video_cap
+import pickle
+
+# Load the camera parameters
+pickle_file = "calibration/camera_parameters.pkl"
+# Abrir y cargar los datos del archivo .pickle
+with open(pickle_file, "rb") as file:
+    calibration_params = pickle.load(file)
+
+# Guardar en variables separadas
+intrinsics = calibration_params["intrinsics"]
+extrinsics = calibration_params["extrinsics"]
+h_señal = 0.5
 
 
 def get_detection(img):
-    # img_resized = resize_image(img, fixed_width)
+    """Get the detection of the signals in the image"""
     detection_image = img.copy()
     rectangles = track(img)
 
     results = {}
     for rect in rectangles:
         x, y, xw, yh = rect
+        # Resize the signal to classify it
         signal_img = cv2.resize(
             detection_image[y:yh, x:xw], (500, 500), interpolation=cv2.INTER_AREA
         )
         signal_type = classify_signal(signal_img)
-        draw_detection(detection_image, rect, signal_type)
-        results[rect] = signal_type
+        distance = calculate_dist_height(
+            intrinsics, extrinsics, h_señal, x, y, xw - x, yh - y
+        )
+        draw_detection(detection_image, rect, signal_type, distance)
+        results[rect] = {"sign_type": signal_type, "distance": distance}
 
-    # show_img("results", detection_image)
     return detection_image, results
 
 
 def detect_signs_in_dir(img_dir, fixed_width=None) -> None:
-    train_data_path = "data/traffic_Data/DATA"
-    test_data_path = "data/traffic_Data/TEST"
-
-    # training_set = cargar_imagenes(train_data_path)
-    # validation_set = cargar_imagenes(test_data_path)
-
-    # Evaluar solo la primera imagen de cada carpeta en el conjunto de validación
-    evaluated_folders = set()
-    # for str_fn in validation_set:
-
-    # img_dir = train_data_path
+    """Detects the signals in the images in the directory"""
     img_dir = Path(img_dir)
 
     for file in img_dir.glob("*.*"):
         str_fn = str(file)
-        folder = os.path.dirname(str_fn)
-        # if folder in evaluated_folders:
-        #     continue
-        evaluated_folders.add(folder)
 
         # Leer la imagen
         img = cv2.imread(str_fn)
@@ -60,7 +61,8 @@ def detect_signs_in_dir(img_dir, fixed_width=None) -> None:
         show_img("output", detection_image)
 
 
-def detect_signs_in_video(video_path, video_name="result", fixed_width=None):
+def detect_signs_in_video(video_path, video_name="result", fixed_width=None) -> None:
+    """Detects the signals in the video and saves the result in a new video, does not use mean shift so it is very slow"""
     frames, frame_width, frame_height, frame_rate = read_video(video_path)
     results = []
     print("Analyzing frames...")
@@ -74,10 +76,14 @@ def detect_signs_in_video(video_path, video_name="result", fixed_width=None):
     save_video(video_name, results, frame_width, frame_height, frame_rate)
 
 
-def get_tracking_windows_crop_hists(detection_image, rectangles):
+def get_tracking_windows_crop_hists(
+    detection_image, rectangles
+) -> tuple[list, list, list]:
+    """Get the tracking windows, crop histograms and signal types"""
     tracking_windows = []
     crop_hists = []
     signal_types = []
+    distances = []
     for x, y, xw, yh in rectangles.keys():
         crop = detection_image[y:yh, x:xw].copy()
 
@@ -94,24 +100,27 @@ def get_tracking_windows_crop_hists(detection_image, rectangles):
         cv2.normalize(crop_hist, crop_hist, 0, 255, cv2.NORM_MINMAX)
         crop_hists.append(crop_hist)
         tracking_windows.append(track_window)
-        signal_types.append(rectangles[(x, y, xw, yh)])
+        signal_types.append(rectangles[(x, y, xw, yh)]["sign_type"])
+        distances.append(rectangles[(x, y, xw, yh)]["distance"])
 
-    return tracking_windows, crop_hists, signal_types
+    return tracking_windows, crop_hists, signal_types, distances
 
 
-def update_detected_signs(frame, results):
+def update_detected_signs(frame, results) -> tuple[list, list, list]:
+    """Update the detected signs in the frame"""
     detection_image, rectangles = get_detection(frame)
     results.append(detection_image)
 
-    tracking_windows, crop_hists, signal_types = get_tracking_windows_crop_hists(
-        detection_image, rectangles
+    tracking_windows, crop_hists, signal_types, distances = (
+        get_tracking_windows_crop_hists(detection_image, rectangles)
     )
-    return tracking_windows, crop_hists, signal_types
+    return tracking_windows, crop_hists, signal_types, distances
 
 
 def keep_track_of_detected_signs(
-    frame, tracking_windows, crop_hists, signal_types, results, fixed_width, term_crit
+    frame, tracking_windows, crop_hists, signal_types, distances, results, term_crit
 ) -> None:
+    """Keep track of the detected signs in the frame using mean shift"""
     input_frame = frame.copy()
 
     # Convert the frame to HSV
@@ -129,12 +138,14 @@ def keep_track_of_detected_signs(
         tracking_windows[i] = track_window
 
         cv2.circle(input_frame, (int(c_x), int(c_y)), 5, (0, 255, 0), -1)
-        draw_detection(input_frame, (x_, y_, x_ + w_, y_ + h_), signal_types[i])
+        draw_detection(
+            input_frame, (x_, y_, x_ + w_, y_ + h_), signal_types[i], distances[i]
+        )
     results.append(input_frame)
 
 
 def follow_signs_in_video(video_path, video_name="result", fixed_width=None):
-
+    """Follows the detected signs in the video and saves the result in a new video, uses mean shift"""
     frames, frame_width, frame_height, frame_rate = read_video(video_path)
     results = []
     print("Analyzing frames...")
@@ -148,8 +159,8 @@ def follow_signs_in_video(video_path, video_name="result", fixed_width=None):
             frame = resize_image(frame, fixed_width=fixed_width)
 
         if frame_idx % update_frequency == 0:
-            tracking_windows, crop_hists, signal_types = update_detected_signs(
-                frame, results
+            tracking_windows, crop_hists, signal_types, distances = (
+                update_detected_signs(frame, results)
             )
             continue
 
@@ -158,8 +169,8 @@ def follow_signs_in_video(video_path, video_name="result", fixed_width=None):
             tracking_windows,
             crop_hists,
             signal_types,
+            distances,
             results,
-            fixed_width,
             term_crit,
         )
 
@@ -168,6 +179,7 @@ def follow_signs_in_video(video_path, video_name="result", fixed_width=None):
 
 
 def live_detection_video(video_path, fixed_width=None):
+    """Detects the signals in the video and shows the result in a new window, this is done in real time"""
     cap, frame_width, frame_height, frame_rate = get_video_cap(video_path)
     update_frequency = 100
     i = 0
@@ -183,8 +195,8 @@ def live_detection_video(video_path, fixed_width=None):
             frame = resize_image(frame, fixed_width=fixed_width)
 
         if i % update_frequency == 0:
-            tracking_windows, crop_hists, signal_types = update_detected_signs(
-                frame, results
+            tracking_windows, crop_hists, signal_types, distances = (
+                update_detected_signs(frame, results)
             )
         else:
             keep_track_of_detected_signs(
@@ -192,8 +204,8 @@ def live_detection_video(video_path, fixed_width=None):
                 tracking_windows,
                 crop_hists,
                 signal_types,
+                distances,
                 results,
-                fixed_width,
                 term_crit,
             )
         cv2.imshow("Frame", results[-1])
@@ -205,12 +217,16 @@ def live_detection_video(video_path, fixed_width=None):
 
 
 if __name__ == "__main__":
-    detect_signs_in_dir("../data/testing_imgs/", fixed_width=500)
-    detect_signs_in_video("../data/video_prueba.mp4", "result_video_prueba")
-    follow_signs_in_video(
-        "../data/video_prueba_largo.mp4",
-        "resize",
-        fixed_width=500,
-    )
-    live_detection_video("../data/video_prueba_largo.mp4", fixed_width = None)
-    live_detection_video(0, fixed_width=None)
+    detect_signs_in_dir("../data/stop_sign/", fixed_width=500)
+    # detect_signs_in_video("../data/video_prueba.mp4", "result_video_prueba")
+    # for video in glob.glob("../data/videos/*.mp4"):
+    #     follow_signs_in_video(
+    #         video, video_name=video.split("\\")[-1].split(".")[0], fixed_width=None
+    #     )
+    # follow_signs_in_video(
+    #     "../data/video_prueba_largo.mp4",
+    #     "resize",
+    #     fixed_width=500,
+    # )
+    # live_detection_video("../data/videos/video_80.mp4", fixed_width=None)
+    # live_detection_video(0, fixed_width=None)

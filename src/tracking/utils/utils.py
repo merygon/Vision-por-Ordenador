@@ -2,15 +2,15 @@ import cv2
 import numpy as np
 
 
-def resize_image(img, fixed_width=300):
-    ratio = fixed_width / img.shape[1]
-    # return img
-    # img_resized = cv2.resize(
-    #     img, None, fx=ratio, fy=ratio, interpolation=cv2.INTER_AREA
-    # )
-    img_resized = cv2.resize(
-        img, (fixed_width, fixed_width), interpolation=cv2.INTER_AREA
-    )
+def resize_image(img, fixed_width=300, use_ratio=False):
+    """Resize image"""
+    if use_ratio:
+        ratio = fixed_width / img.shape[1]
+        dim = (fixed_width, int(img.shape[0] * ratio))
+    else:
+        dim = (fixed_width, fixed_width)
+    img_resized = cv2.resize(img, dim, interpolation=cv2.INTER_AREA)
+
     return img_resized
 
 
@@ -27,6 +27,7 @@ def show_img(window_name, img, adjust=False):
 
 
 def rectanglesIntersect(r1, r2):
+    """Calculates if 2 rectangles intersect"""
     x, y, xw, yh = r1
     x2, y2, xw2, yh2 = r2
 
@@ -36,7 +37,18 @@ def rectanglesIntersect(r1, r2):
     return False
 
 
+def calculate_dist_height(
+    intrinsic_params, extrinsic_params, real_height_signal, x, y, w, h
+):
+    """Calculate the distance to the signal"""
+    K = intrinsic_params
+    fx, fy = K[0, 0], K[1, 1]  # Longitudes focales en X e Y
+    distance_z = (real_height_signal * fy) / h
+    return distance_z
+
+
 def contrast_enhance(img):
+    """Enhance contrast with histogram equalization"""
     img_lab = cv2.cvtColor(img, cv2.COLOR_BGR2Lab)
     L, a, b = cv2.split(img_lab)
     L = cv2.equalizeHist(L)
@@ -48,6 +60,7 @@ def contrast_enhance(img):
 # canny edge detection
 def auto_canny(img, method, sigma=0.33):
     """
+    Apply Canny edge detection
     Args:
     img: grayscale image
     method: Otsu, triangle, and median
@@ -96,7 +109,9 @@ upper_black = (179, 255, 5)
 
 
 def color_seg(img, kernel_size=None):
-    """Args:
+    """
+    Color based segmentation: red, blue
+    Args:
     img: image in bgr
     kernel_size: None (default:(3, 3))"""
     hsv_img = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
@@ -104,12 +119,8 @@ def color_seg(img, kernel_size=None):
     mask_red1 = cv2.inRange(hsv_img, lower_red1, upper_red1)
     mask_red2 = cv2.inRange(hsv_img, lower_red2, upper_red2)
     mask_blue = cv2.inRange(hsv_img, lower_blue, upper_blue)
-    mask_yellow = cv2.inRange(hsv_img, lower_yellow, upper_yellow)
-    mask_black = cv2.inRange(hsv_img, lower_black, upper_black)
-    mask_white = cv2.inRange(hsv_img, (0, 0, 200), (179, 30, 255))
 
-    # mask_combined = mask_red1 | mask_red2 | mask_blue | mask_yellow | mask_black
-    mask_combined = mask_red1 | mask_blue | mask_red2  # | mask_black  # | mask_yellow |
+    mask_combined = mask_red1 | mask_blue | mask_red2
 
     if kernel_size is not None:
         kernel = np.ones(kernel_size, np.uint8)
@@ -125,6 +136,7 @@ def color_seg(img, kernel_size=None):
 
 # rectangle detection (using Douglas-Peuker algorithm)
 def cnt_rect(cnts, coef=0.1):
+    """Rectangle detection using Douglas-Peuker algorithm"""
     contour_list = []
     for cnt in cnts:
         peri = cv2.arcLength(cnt, True)
@@ -135,8 +147,6 @@ def cnt_rect(cnts, coef=0.1):
         return None
     else:
         return sorted(contour_list, key=lambda x: -cv2.contourArea(x))
-        LC = max(contour_list, key=cv2.contourArea)
-        return LC
 
 
 # circle detection
@@ -151,7 +161,9 @@ hough_circle_parameters = {
 
 
 def cnt_circle(img, hough_dict):
-    """Args:
+    """
+    Circle detection using Hough Circle Transform
+    Args:
     img: Grayscale Image after resizing
     cnt: contour
     hough_dict: hough_circle_transform parameters"""
@@ -194,19 +206,12 @@ def cnt_circle(img, hough_dict):
         cv2.circle(mask, (int(center_x), int(center_y)), int(r), 255)
         cnts = cv2.findContours(mask, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
         cnt = cnts[0]
-        # print(cnt)
-        # print(list(map(cv2.contourArea, cnt)))
-        # print(list(filter(lambda x: cv2.contourArea(x) > 0, cnt)))
         return sorted(cnt, key=lambda x: -cv2.contourArea(x))
-        if len(cnts[0]) > 0:
-            return cnt
-            return max(cnt, key=cv2.contourArea)
-        else:
-            return cnt[-1]
 
 
 # combine the results of 2 shape detectors
 def integrate_circle_rect(rect_cnt, circle_cnt, cnt):
+    """Combine the results of 2 shape detectors"""
     if circle_cnt is not None and rect_cnt is not None:
         # compare the area
         if cv2.contourArea(circle_cnt) >= cv2.contourArea(rect_cnt):
@@ -231,6 +236,7 @@ def integrate_circle_rect(rect_cnt, circle_cnt, cnt):
 
 # combine the results of edge detector + color based segmentation followed by shape detection combined results
 def integrate_edge_color(output1, output2):
+    """Combine the results of edge detector + color based segmentation followed by shape detection combined results"""
     if not isinstance(output1, np.ndarray):
         output1 = np.array(output1)
 
@@ -254,36 +260,30 @@ def integrate_edge_color(output1, output2):
 
 
 def mser(img):
-    # Import packages
-
+    """Extract text regions using MSER"""
     # Create MSER object
     mser_object = cv2.MSER_create(delta=5, max_variation=0.4)
-
-    # Your image path i-e receipt path
-    # img = cv2.imread('../../data/stop_sign/stop_sign_000.png')
-    # img = cv2.imread('../../data/stop_sign/turn_right.jpg')
-    # img = cv2.imread('../../data/stop_sign/two_stop_signs.jpg')
-    # img = cv2.resize(img, (500,500))
 
     # Convert to gray scale
     gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
 
-    vis = img.copy()
+    original_image = img.copy()
 
     # detect regions in gray scale image
     regions, _ = mser_object.detectRegions(gray)
 
+    # Create convex hull of the regions
     hulls = [cv2.convexHull(p.reshape(-1, 1, 2)) for p in regions]
 
-    cv2.polylines(vis, hulls, 1, (0, 255, 0))
+    cv2.polylines(original_image, hulls, 1, (0, 255, 0))
 
     mask = np.zeros((img.shape[0], img.shape[1], 1), dtype=np.uint8)
 
+    # Draw the contours
     for contour in hulls:
-
         cv2.drawContours(mask, [contour], -1, (255, 255, 255), -1)
 
     # this is used to find only text regions, remaining are ignored
-    text_only = cv2.bitwise_and(img, img, mask=mask)
+    resulting_detection = cv2.bitwise_and(img, img, mask=mask)
 
-    return text_only
+    return resulting_detection

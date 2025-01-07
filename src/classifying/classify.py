@@ -12,13 +12,22 @@ def classify_signal(image):
     return predicted_label_name
 
 
-def draw_detection(img, rectangle, signal_type):
+def draw_detection(img, rectangle, signal_type, distance):
     x, y, xw, yh = rectangle
     cv2.rectangle(img, (x, y), (xw, yh), (0, 255, 0), 2)
     cv2.putText(
         img,
         signal_type,
         (x, y - 10),
+        cv2.FONT_HERSHEY_SIMPLEX,
+        0.5,
+        (0, 255, 0),
+        2,
+    )
+    cv2.putText(
+        img,
+        f"{distance:.02f}m",
+        (x, yh + 15),
         cv2.FONT_HERSHEY_SIMPLEX,
         0.5,
         (0, 255, 0),

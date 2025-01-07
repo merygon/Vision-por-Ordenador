@@ -1,54 +1,33 @@
-import time
 from skimage.exposure import is_low_contrast
-from pathlib import Path
 import cv2
 from .utils import *
-import os
-import pickle
-
-def calculate_dist_height(intrinsic_params, extrinsic_params, real_height_signal, x, y, w, h):
-    K = intrinsic_params
-    fx, fy = K[0, 0], K[1, 1]  # Longitudes focales en X e Y
-    distance_z = (real_height_signal * fy) / h  
-    return distance_z
 
 
 def track(img) -> set:
-
-    #pickle_file = os.path.join(os.path.dirname(__file__), "camera_calibration_params.pickle")
-    pickle_file = "calibration/camera_parameters.pkl"
-    # Abrir y cargar los datos del archivo .pickle
-    with open(pickle_file, "rb") as file:
-        calibration_params = pickle.load(file)
-
-    # Guardar en variables separadas
-    intrinsics = calibration_params["intrinsics"]
-    extrinsics = calibration_params["extrinsics"]
-    h_señal = 0.5  
+    """Track the signal in the image"""
 
     img_copy = img.copy()
 
-    # Denoise the image + change to grayscale
+    # Denoise the image
     img_denoised = cv2.medianBlur(img_copy, 3)
+
+    # Contrast enhancement
     if is_low_contrast(img_denoised):
         img_denoised = contrast_enhance(img_denoised)
-    # img_denoised = contrast_enhance(img_denoised)
-    # Resize the image
-    img_resized = img_denoised  # resize_image(img_denoised, fixed_width)
 
-    img_resized_mser = mser(img_resized)
+    img_resized_mser = mser(img_denoised)
     # change to grayscale
     gray = cv2.cvtColor(img_resized_mser, cv2.COLOR_BGR2GRAY)
 
     # Edge detection + shape detection + combine results of shape detector
     edge, canny_th2 = auto_canny(gray, "otsu")
-    # show_img("canny", edge)
+
     # Perform shape detectors
     cnts = cv2.findContours(edge, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
     cnt_edge = cnts[0]
     cnt = cnts[0]
     rect_edges = cnt_rect(cnt)
-    # show_img("contours", cnts)
+
     hough_circle_parameters["param1"] = canny_th2 if canny_th2 > 0 else 100
     circle_edges = cnt_circle(gray, hough_circle_parameters)
     outputs1 = []
@@ -61,13 +40,12 @@ def track(img) -> set:
     else:
         for rect in rect_edges:
             for circle in circle_edges:
-                # for rect, circle in zip(rect_edges, circle_edges):
                 output1 = integrate_circle_rect(rect, circle, cnt_edge)
                 outputs1.append(output1)
 
     # color segmentation
     color_segmented = color_seg(img_resized_mser)
-    # show_img("segmented", color_segmented)
+
     # perform rectangular object detection
     cnts = cv2.findContours(color_segmented, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
     cnt = cnts[0]
@@ -86,7 +64,6 @@ def track(img) -> set:
     else:
         for rect in rects:
             for circle in circles:
-                # for rect, circle in zip(rects, circles):
                 output2 = integrate_circle_rect(rect, circle, cnt)
                 outputs2.append(output2)
 
@@ -97,7 +74,6 @@ def track(img) -> set:
         final_outputs.append(final_output)
 
     rects_saved = list()
-    # signs_detected = dict()
     for final_output in final_outputs:
         if len(final_output) == 0 or cv2.contourArea(final_output) <= 100:
             pass
@@ -113,11 +89,10 @@ def track(img) -> set:
                     break
             if not intersect:
                 rects_saved.append(pred_bb)
-            # prediction = predict_image(str_fn, bow.vocabulary, bow_extractor)
-            # signs_detected[pred_bb] = prediction
-            #distancia, altura = calculate_dist_height(intrinsics, extrinsics, h_señal, x, y, w, h)
-            distancia = calculate_dist_height(intrinsics, extrinsics, h_señal, x, y, x+w, y+h)
-            print(f"Distancia a la señal: {distancia} metros.")
-            #print(f"Altura de la señal: {altura} metros.")
+
+            # distancia = calculate_dist_height(
+            #     intrinsics, extrinsics, h_señal, x, y, x + w, y + h
+            # )
+            # print(f"Distancia a la señal: {distancia} metros.")
 
     return rects_saved

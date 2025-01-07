@@ -38,6 +38,7 @@ A comprehensive computer vision system for real-time detection, tracking, and cl
     │   └── calibration.ipynb
     ├── classifying/
     │   ├── utils/
+    │   ├── download_dataset.py
     │   ├── classify.py
     │   └── train_classifier.py
     ├── tracking/
@@ -76,7 +77,7 @@ cd src
 Before using the system, you need to calibrate your camera:
 
 ```bash
-jupyter notebook calibration/calibration.ipynb
+python -m calibration.calibration
 ```
 
 The calibration process requires:
@@ -92,6 +93,12 @@ The calibration script will generate `camera_parameters.pkl` containing intrinsi
 
 
 ### 2. Training the Classifier
+
+To download the dataset used for training our classifier, execute:
+```bash
+python -m classifying.download_dataset
+```
+The dataset will be downloaded from kaggle and it will move and rename the files in order to train the classifier correctly. However, removing the not wanted folders and changing the labels.xlsx has to be done by hand. 
 
 The classification model needs to be trained on a dataset of traffic signs:
 

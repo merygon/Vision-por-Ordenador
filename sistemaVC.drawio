@@ -1,67 +1,68 @@
-<mxfile host="app.diagrams.net" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36" version="26.0.2">
+<mxfile host="app.diagrams.net" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36" version="26.0.4">
   <diagram name="Página-1" id="c8cFI1NlJsHm6OADOcCG">
-    <mxGraphModel dx="2577" dy="1028" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+    <mxGraphModel dx="2927" dy="1316" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
-        <mxCell id="BoVE7Q1CqvbE-JO_DtOr-20" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="BoVE7Q1CqvbE-JO_DtOr-1" target="BoVE7Q1CqvbE-JO_DtOr-8">
+        <mxCell id="BoVE7Q1CqvbE-JO_DtOr-20" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" parent="1" source="BoVE7Q1CqvbE-JO_DtOr-1" target="BoVE7Q1CqvbE-JO_DtOr-8" edge="1">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="BoVE7Q1CqvbE-JO_DtOr-1" value="Calibration" style="html=1;whiteSpace=wrap;" vertex="1" parent="1">
+        <mxCell id="BoVE7Q1CqvbE-JO_DtOr-1" value="Calibration" style="html=1;whiteSpace=wrap;" parent="1" vertex="1">
           <mxGeometry x="-80" y="250" width="110" height="50" as="geometry" />
         </mxCell>
-        <mxCell id="BoVE7Q1CqvbE-JO_DtOr-22" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="BoVE7Q1CqvbE-JO_DtOr-2" target="BoVE7Q1CqvbE-JO_DtOr-30">
+        <mxCell id="BoVE7Q1CqvbE-JO_DtOr-22" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" parent="1" source="BoVE7Q1CqvbE-JO_DtOr-2" target="BoVE7Q1CqvbE-JO_DtOr-30" edge="1">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="BoVE7Q1CqvbE-JO_DtOr-2" value="Classifying" style="html=1;whiteSpace=wrap;" vertex="1" parent="1">
+        <mxCell id="BoVE7Q1CqvbE-JO_DtOr-2" value="Classifying" style="html=1;whiteSpace=wrap;" parent="1" vertex="1">
           <mxGeometry x="1050" y="235" width="110" height="50" as="geometry" />
         </mxCell>
-        <mxCell id="BoVE7Q1CqvbE-JO_DtOr-38" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;" edge="1" parent="1" source="BoVE7Q1CqvbE-JO_DtOr-3" target="BoVE7Q1CqvbE-JO_DtOr-10">
+        <mxCell id="BoVE7Q1CqvbE-JO_DtOr-38" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;" parent="1" source="BoVE7Q1CqvbE-JO_DtOr-3" target="BoVE7Q1CqvbE-JO_DtOr-10" edge="1">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="BoVE7Q1CqvbE-JO_DtOr-3" value="Tracking" style="html=1;whiteSpace=wrap;" vertex="1" parent="1">
+        <mxCell id="BoVE7Q1CqvbE-JO_DtOr-3" value="Tracking" style="html=1;whiteSpace=wrap;" parent="1" vertex="1">
           <mxGeometry x="1450" y="235" width="110" height="50" as="geometry" />
         </mxCell>
-        <mxCell id="BoVE7Q1CqvbE-JO_DtOr-21" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="BoVE7Q1CqvbE-JO_DtOr-8" target="BoVE7Q1CqvbE-JO_DtOr-13">
+        <mxCell id="BoVE7Q1CqvbE-JO_DtOr-21" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" parent="1" source="BoVE7Q1CqvbE-JO_DtOr-8" target="BoVE7Q1CqvbE-JO_DtOr-13" edge="1">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="BoVE7Q1CqvbE-JO_DtOr-8" value="Load Image" style="html=1;whiteSpace=wrap;" vertex="1" parent="1">
+        <mxCell id="BoVE7Q1CqvbE-JO_DtOr-8" value="Load Image / Get next frame" style="html=1;whiteSpace=wrap;" parent="1" vertex="1">
           <mxGeometry x="100" y="250" width="110" height="50" as="geometry" />
         </mxCell>
-        <mxCell id="BoVE7Q1CqvbE-JO_DtOr-39" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0.5;entryY=1;entryDx=0;entryDy=0;" edge="1" parent="1" source="BoVE7Q1CqvbE-JO_DtOr-10" target="BoVE7Q1CqvbE-JO_DtOr-2">
+        <mxCell id="BoVE7Q1CqvbE-JO_DtOr-39" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0.5;entryY=1;entryDx=0;entryDy=0;" parent="1" source="BoVE7Q1CqvbE-JO_DtOr-10" target="BoVE7Q1CqvbE-JO_DtOr-8" edge="1">
           <mxGeometry relative="1" as="geometry">
             <Array as="points">
               <mxPoint x="1760" y="260" />
-              <mxPoint x="1760" y="330" />
-              <mxPoint x="1105" y="330" />
+              <mxPoint x="1760" y="420" />
+              <mxPoint x="150" y="420" />
+              <mxPoint x="150" y="300" />
             </Array>
           </mxGeometry>
         </mxCell>
-        <mxCell id="BoVE7Q1CqvbE-JO_DtOr-10" value="bounding box" style="html=1;whiteSpace=wrap;" vertex="1" parent="1">
+        <mxCell id="BoVE7Q1CqvbE-JO_DtOr-10" value="bounding box" style="html=1;whiteSpace=wrap;" parent="1" vertex="1">
           <mxGeometry x="1630" y="235" width="110" height="50" as="geometry" />
         </mxCell>
-        <mxCell id="BoVE7Q1CqvbE-JO_DtOr-37" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;" edge="1" parent="1" source="BoVE7Q1CqvbE-JO_DtOr-11" target="BoVE7Q1CqvbE-JO_DtOr-2">
+        <mxCell id="BoVE7Q1CqvbE-JO_DtOr-37" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;" parent="1" source="BoVE7Q1CqvbE-JO_DtOr-11" target="BoVE7Q1CqvbE-JO_DtOr-2" edge="1">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="BoVE7Q1CqvbE-JO_DtOr-11" value="integrate outputs" style="html=1;whiteSpace=wrap;" vertex="1" parent="1">
+        <mxCell id="BoVE7Q1CqvbE-JO_DtOr-11" value="integrate outputs" style="html=1;whiteSpace=wrap;" parent="1" vertex="1">
           <mxGeometry x="860" y="235" width="110" height="50" as="geometry" />
         </mxCell>
-        <mxCell id="BoVE7Q1CqvbE-JO_DtOr-25" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="BoVE7Q1CqvbE-JO_DtOr-12" target="BoVE7Q1CqvbE-JO_DtOr-16">
+        <mxCell id="BoVE7Q1CqvbE-JO_DtOr-25" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" parent="1" source="BoVE7Q1CqvbE-JO_DtOr-12" target="BoVE7Q1CqvbE-JO_DtOr-16" edge="1">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="BoVE7Q1CqvbE-JO_DtOr-12" value="Canny edge detection" style="html=1;whiteSpace=wrap;" vertex="1" parent="1">
+        <mxCell id="BoVE7Q1CqvbE-JO_DtOr-12" value="Canny edge detection" style="html=1;whiteSpace=wrap;" parent="1" vertex="1">
           <mxGeometry x="470" y="195" width="110" height="50" as="geometry" />
         </mxCell>
-        <mxCell id="BoVE7Q1CqvbE-JO_DtOr-35" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="BoVE7Q1CqvbE-JO_DtOr-13" target="BoVE7Q1CqvbE-JO_DtOr-12">
+        <mxCell id="BoVE7Q1CqvbE-JO_DtOr-35" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" parent="1" source="BoVE7Q1CqvbE-JO_DtOr-13" target="BoVE7Q1CqvbE-JO_DtOr-12" edge="1">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="BoVE7Q1CqvbE-JO_DtOr-36" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="BoVE7Q1CqvbE-JO_DtOr-13" target="BoVE7Q1CqvbE-JO_DtOr-15">
+        <mxCell id="BoVE7Q1CqvbE-JO_DtOr-36" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" parent="1" source="BoVE7Q1CqvbE-JO_DtOr-13" target="BoVE7Q1CqvbE-JO_DtOr-15" edge="1">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="BoVE7Q1CqvbE-JO_DtOr-13" value="Image preprocessing" style="html=1;whiteSpace=wrap;" vertex="1" parent="1">
+        <mxCell id="BoVE7Q1CqvbE-JO_DtOr-13" value="Image preprocessing" style="html=1;whiteSpace=wrap;" parent="1" vertex="1">
           <mxGeometry x="270" y="250" width="110" height="50" as="geometry" />
         </mxCell>
-        <mxCell id="BoVE7Q1CqvbE-JO_DtOr-28" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="BoVE7Q1CqvbE-JO_DtOr-14" target="BoVE7Q1CqvbE-JO_DtOr-11">
+        <mxCell id="BoVE7Q1CqvbE-JO_DtOr-28" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" parent="1" source="BoVE7Q1CqvbE-JO_DtOr-14" target="BoVE7Q1CqvbE-JO_DtOr-11" edge="1">
           <mxGeometry relative="1" as="geometry">
             <Array as="points">
               <mxPoint x="830" y="330" />
@@ -69,16 +70,16 @@
             </Array>
           </mxGeometry>
         </mxCell>
-        <mxCell id="BoVE7Q1CqvbE-JO_DtOr-14" value="shapes detection" style="html=1;whiteSpace=wrap;" vertex="1" parent="1">
+        <mxCell id="BoVE7Q1CqvbE-JO_DtOr-14" value="shapes detection" style="html=1;whiteSpace=wrap;" parent="1" vertex="1">
           <mxGeometry x="690" y="305" width="110" height="50" as="geometry" />
         </mxCell>
-        <mxCell id="BoVE7Q1CqvbE-JO_DtOr-26" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="BoVE7Q1CqvbE-JO_DtOr-15" target="BoVE7Q1CqvbE-JO_DtOr-14">
+        <mxCell id="BoVE7Q1CqvbE-JO_DtOr-26" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" parent="1" source="BoVE7Q1CqvbE-JO_DtOr-15" target="BoVE7Q1CqvbE-JO_DtOr-14" edge="1">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="BoVE7Q1CqvbE-JO_DtOr-15" value="color based segmentation" style="html=1;whiteSpace=wrap;" vertex="1" parent="1">
+        <mxCell id="BoVE7Q1CqvbE-JO_DtOr-15" value="color based segmentation" style="html=1;whiteSpace=wrap;" parent="1" vertex="1">
           <mxGeometry x="470" y="305" width="110" height="50" as="geometry" />
         </mxCell>
-        <mxCell id="BoVE7Q1CqvbE-JO_DtOr-27" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="BoVE7Q1CqvbE-JO_DtOr-16" target="BoVE7Q1CqvbE-JO_DtOr-11">
+        <mxCell id="BoVE7Q1CqvbE-JO_DtOr-27" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" parent="1" source="BoVE7Q1CqvbE-JO_DtOr-16" target="BoVE7Q1CqvbE-JO_DtOr-11" edge="1">
           <mxGeometry relative="1" as="geometry">
             <Array as="points">
               <mxPoint x="830" y="220" />
@@ -86,13 +87,13 @@
             </Array>
           </mxGeometry>
         </mxCell>
-        <mxCell id="BoVE7Q1CqvbE-JO_DtOr-16" value="shapes detection" style="html=1;whiteSpace=wrap;" vertex="1" parent="1">
+        <mxCell id="BoVE7Q1CqvbE-JO_DtOr-16" value="shapes detection" style="html=1;whiteSpace=wrap;" parent="1" vertex="1">
           <mxGeometry x="680" y="195" width="110" height="50" as="geometry" />
         </mxCell>
-        <mxCell id="BoVE7Q1CqvbE-JO_DtOr-31" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="BoVE7Q1CqvbE-JO_DtOr-30" target="BoVE7Q1CqvbE-JO_DtOr-3">
+        <mxCell id="BoVE7Q1CqvbE-JO_DtOr-31" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" parent="1" source="BoVE7Q1CqvbE-JO_DtOr-30" target="BoVE7Q1CqvbE-JO_DtOr-3" edge="1">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="BoVE7Q1CqvbE-JO_DtOr-30" value="Distance Calculation" style="html=1;whiteSpace=wrap;" vertex="1" parent="1">
+        <mxCell id="BoVE7Q1CqvbE-JO_DtOr-30" value="Distance Calculation" style="html=1;whiteSpace=wrap;" parent="1" vertex="1">
           <mxGeometry x="1240" y="235" width="110" height="50" as="geometry" />
         </mxCell>
       </root>

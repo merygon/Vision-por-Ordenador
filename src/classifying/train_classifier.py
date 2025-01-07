@@ -7,8 +7,8 @@ import pickle
 import numpy as np
 
 # Cargar conjuntos de datos
-training_set = Dataset.load("../../data/traffic_Data/DATA", "*png")
-validation_set = Dataset.load("../../data/traffic_Data/TEST", "*png")
+training_set = Dataset.load("data/traffic_Data/DATA", "*png")
+validation_set = Dataset.load("data/traffic_Data/TEST", "*png")
 
 print(training_set[0])
 print(validation_set[0])
@@ -41,12 +41,12 @@ for path in tqdm(training_set, unit="image", file=sys.stdout):
     # 2. Filtrado de ruido
     image_blur = cv2.GaussianBlur(image_eq, (5, 5), 0)
 
-    # 3. Ajustar brillo 
+    # 3. Ajustar brillo
     image_bright = cv2.convertScaleAbs(image_blur, alpha=1.0, beta=50)
 
     # 4. Corrección gamma
     gamma = 2.0  # Ajustar el valor de gamma según sea necesario
-    gamma_corrected = np.array(255 * (image / 255) ** gamma, dtype='uint8')
+    gamma_corrected = np.array(255 * (image / 255) ** gamma, dtype="uint8")
 
     image = gamma_corrected
     try:

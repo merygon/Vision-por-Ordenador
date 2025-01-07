@@ -18,6 +18,7 @@ A comprehensive computer vision system for real-time detection, tracking, and cl
 </video>
 
 
+
 ## System Requirements
 
 - Python 3.8+

@@ -12,10 +12,7 @@ A comprehensive computer vision system for real-time detection, tracking, and cl
 
 ## Example video
 
-<video width="100%" height="auto" controls>
-    <source src="assets/example_video.mp4" type="video/mp4">
-    Your browser does not support the video tag.
-</video>
+![Video Preview](assets/example_video.gif)
 
 
 

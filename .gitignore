@@ -11,5 +11,7 @@ results/
 */.pytest_cache/
 *.xlsx
 *.csv
-*.mp4
+src/*.mp4
 *.avi
+data/videos/
+data/*.mp4

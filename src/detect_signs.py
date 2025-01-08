@@ -16,7 +16,6 @@ with open(pickle_file, "rb") as file:
 # Guardar en variables separadas
 intrinsics = calibration_params["intrinsics"]
 extrinsics = calibration_params["extrinsics"]
-h_señal = 0.5
 
 
 def get_detection(img):
@@ -179,7 +178,10 @@ def follow_signs_in_video(video_path, video_name="result", fixed_width=None):
 
 
 def live_detection_video(video_path, fixed_width=None):
-    """Detects the signals in the video and shows the result in a new window, this is done in real time"""
+    """
+    Detects the signals in the video and shows the result in a new window, this is done in real time
+    keep fixed_width = None to not resize the input image
+    """
     cap, frame_width, frame_height, frame_rate = get_video_cap(video_path)
     update_frequency = 100
     i = 0
@@ -217,16 +219,18 @@ def live_detection_video(video_path, fixed_width=None):
 
 
 if __name__ == "__main__":
-    detect_signs_in_dir("../data/stop_sign/", fixed_width=500)
+    h_señal = 0.50
+    live_detection_video(0, fixed_width=None)
+    # detect_signs_in_dir("../data/stop_sign/", fixed_width=500)
     # detect_signs_in_video("../data/video_prueba.mp4", "result_video_prueba")
-    # for video in glob.glob("../data/videos/*.mp4"):
-    #     follow_signs_in_video(
-    #         video, video_name=video.split("\\")[-1].split(".")[0], fixed_width=None
-    #     )
+    # follow_signs_in_video(
+    #     video,
+    #     video_name="output_video",
+    #     fixed_width=None,
+    # )
     # follow_signs_in_video(
     #     "../data/video_prueba_largo.mp4",
-    #     "resize",
+    #     "resize-distances",
     #     fixed_width=500,
     # )
     # live_detection_video("../data/videos/video_80.mp4", fixed_width=None)
-    # live_detection_video(0, fixed_width=None)

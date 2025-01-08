@@ -13,7 +13,10 @@ A comprehensive computer vision system for real-time detection, tracking, and cl
 ## Example video
 
 ![Video Preview](assets/example_video.gif)
+*Example of live detection using the raspberry pi camera. The detection and tracking works very well in this video*
 
+![Video Preview](assets/example_video2.gif)
+*Example of the detection of several signs. It can be seen that the classification is not perfect.*
 
 
 ## System Requirements

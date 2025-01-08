@@ -4,13 +4,11 @@ src/calibration/*.jpg
 */.DS_Store
 */.vscode
 __pycache__/
-traffic_Data/
 .pytest_cache
 results/
 */.pytest_cache
 */.pytest_cache/
 *.xlsx
-*.csv
 src/*.mp4
 *.avi
 data/videos/

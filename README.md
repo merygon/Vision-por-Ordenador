@@ -16,6 +16,10 @@ A comprehensive computer vision system for real-time detection, tracking, and cl
 
 *Example of live detection using the raspberry pi camera. The detection and tracking works very well in this video*
 
+![Video Preview](assets/example_video3.gif)
+
+*Another example of live detection using the raspberry pi camera. It detects the go right sign consistently*
+
 ![Video Preview](assets/example_video2.gif)
 
 *Example of the detection of several signs. It can be seen that the classification is not perfect.*
